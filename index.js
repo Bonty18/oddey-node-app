@@ -29,7 +29,22 @@ app.get('/api/library/playlists', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+// ... after the /api/library/playlists route ...
 
+app.get('/api/stream/:videoId', async (req, res) => {
+    try {
+        const videoId = req.params.videoId;
+        const song = await api.getSong(videoId);
+        // We are sending back the direct URL for the audio
+        res.json({ url: song.url });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Start the server
+app.listen(port, () => {
+// ...
 // Start the server
 app.listen(port, () => {
     console.log(`ODDEY server listening on port ${port}`);

@@ -31,12 +31,12 @@ app.get('/api/library/playlists', async (req, res) => {
 app.get('/api/stream/:videoId', async (req, res) => {
     try {
         const videoId = req.params.videoId;
-        const song = await api.getSong(videoId);
-        res.json({ url: song.url });
-} catch (error) {
-    console.error("Error getting stream URL:", error); // <-- ADD THIS LINE
-    res.status(500).json({ error: error.message });
-}
+        const songData = await api.getStreamingData(videoId); // Correct function name
+        res.json({ url: songData.formats[0].url });     // Correct path to the URL
+    } catch (error) {
+        console.error("Error getting stream URL:", error);
+        res.status(500).json({ error: error.message });
+    }
 });
 
 // Start the server

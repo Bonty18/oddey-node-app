@@ -1,1 +1,8 @@
-
+{
+  "short_name": "ODDEY",
+  "name": "ODDEY Music Player",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#1DB954"
+}

@@ -21,8 +21,10 @@ api.initalize({ cookies: process.env.YT_COOKIE })
 // --- API ROUTES ---
 app.get('/api/library/playlists', async (req, res) => {
     try {
-        const playlists = await api.getLibraryPlaylists();
-        res.json(playlists);
+        // We changed the function to search instead of getting playlists
+        const searchResults = await api.search("trending songs", "song");
+        // We now send the search results back to the UI
+        res.json(searchResults.content);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

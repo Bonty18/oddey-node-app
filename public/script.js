@@ -12,21 +12,22 @@ async function fetchPlaylists() {
             throw new Error(`Server responded with an error: ${response.status}`);
         }
 
-        const playlists = await response.json();
-
+        const songs = await response.json(); // We changed the variable name to songs
+        
         // This checks if the response is empty or invalid
-        if (!playlists || playlists.length === 0) {
-             content.innerHTML = '<h2>No playlists found in your library.</h2>';
+        if (!songs || songs.length === 0) {
+             content.innerHTML = '<h2>No songs found.</h2>'; // Changed the message
              return;
         }
-
-        content.innerHTML = '<h2>My Playlists</h2>';
-
-        playlists.forEach(playlist => {
-            const playlistDiv = document.createElement('div');
-            playlistDiv.className = 'playlist-item';
-            playlistDiv.innerText = playlist.title;
-            content.appendChild(playlistDiv);
+        
+        content.innerHTML = '<h2>Trending Songs</h2>'; // Changed the title
+        
+        // This loop now displays song names
+        songs.forEach(song => {
+            const songDiv = document.createElement('div');
+            songDiv.className = 'playlist-item';
+            songDiv.innerText = song.name; // We now use song.name
+            content.appendChild(songDiv);
         });
 
     } catch (error) {

@@ -33,9 +33,10 @@ app.get('/api/stream/:videoId', async (req, res) => {
         const videoId = req.params.videoId;
         const song = await api.getSong(videoId);
         res.json({ url: song.url });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+} catch (error) {
+    console.error("Error getting stream URL:", error); // <-- ADD THIS LINE
+    res.status(500).json({ error: error.message });
+}
 });
 
 // Start the server

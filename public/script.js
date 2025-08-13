@@ -1,8 +1,8 @@
 window.addEventListener('load', () => {
-    fetchPlaylists();
+    fetchSongs();
 });
 
-async function fetchPlaylists() {
+async function fetchSongs() {
     const content = document.getElementById('content');
     try {
         const response = await fetch('/api/library/playlists');
@@ -12,23 +12,23 @@ async function fetchPlaylists() {
         }
 
         const songs = await response.json();
-
+        
         if (!songs || songs.length === 0) {
              content.innerHTML = '<h2>No songs found.</h2>';
              return;
         }
-
+        
         content.innerHTML = '<h2>Trending Songs</h2>';
-
+        
         songs.forEach(song => {
             const songDiv = document.createElement('div');
             songDiv.className = 'playlist-item';
             songDiv.innerText = song.name;
 
-            // --- NEW --- Store the videoId on the element
+            // Store the videoId so we know which song to play
             songDiv.dataset.videoId = song.videoId;
 
-            // --- NEW --- Add a click event listener
+            // Add the click event listener to play the song
             songDiv.addEventListener('click', playSong);
 
             content.appendChild(songDiv);
@@ -39,10 +39,13 @@ async function fetchPlaylists() {
     }
 }
 
-// --- NEW --- This function runs when a song is clicked
+// This new function runs when a song is clicked
 async function playSong(event) {
     const videoId = event.target.dataset.videoId;
     const audioPlayer = document.getElementById('audio-player');
+    
+    // Let the user know we're loading the song
+    event.target.innerText = "Loading...";
 
     try {
         // Ask our backend for the streaming URL
@@ -53,10 +56,14 @@ async function playSong(event) {
             // Set the URL on the audio player and play it
             audioPlayer.src = data.url;
             audioPlayer.play();
+            // We can change the text back after we start loading
+            event.target.innerText = event.target.dataset.originalTitle || event.target.innerText;
         } else {
             alert('Could not get streaming URL.');
+            event.target.innerText = event.target.dataset.originalTitle || event.target.innerText;
         }
     } catch (error) {
         alert('Error fetching song.');
+        event.target.innerText = event.target.dataset.originalTitle || event.target.innerText;
     }
 }

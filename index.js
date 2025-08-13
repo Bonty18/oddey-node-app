@@ -6,7 +6,7 @@ const app = express();
 const api = new YoutubeMusicApi();
 const port = process.env.PORT || 8080;
 
-// Serve the frontend files (HTML, CSS, JS)
+// Serve the frontend files from the 'public' folder
 app.use(express.static('public'));
 
 // Initialize the YouTube Music API with our cookie
